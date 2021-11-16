@@ -12,7 +12,7 @@ class GameBoard:
         self.surface = surface
 
         # Game keeping
-        self.player_one = False
+        self.player_one = True
         self.game_over = False
 
         # Pieces
@@ -44,13 +44,7 @@ class GameBoard:
 
     def piece_collisions(self):
         for i, sprite in enumerate(self.pieces.sprites()):
-            for j, other_sprite in enumerate(self.pieces.sprites()):
-                collided = sprite.rect.colliderect(other_sprite)
-                if collided and i != j:
-                    return collided
-                else:
-                    continue
-            if sprite.rect.y >= screen_height - width or collided:
+            if sprite.rect.y >= screen_height - width:
                 sprite.stop = True
 
     def update_grid(self):
