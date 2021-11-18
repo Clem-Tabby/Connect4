@@ -1,6 +1,6 @@
 
 import pygame
-from settings import grid, width, screen_height
+from settings import grid, width, screen_height, num_rows, num_cols
 from gamepiece import GamePiece
 from math import floor
 from tile import Tile
@@ -14,6 +14,7 @@ class GameBoard:
         # Game keeping
         self.player_one = True
         self.game_over = False
+        self.stack_heights = [0 for col in range(num_cols)]
 
         # Pieces
         self.pieces = pygame.sprite.Group()
@@ -35,11 +36,20 @@ class GameBoard:
         self.pieces.add(GamePiece(color, (x, width)))
 
     def piece_collisions(self):
-        for i, sprite in enumerate(self.pieces.sprites()):
+        for sprite in self.pieces.sprites():
+            if sprite.stop is False:
+                for other_sprite in self.pieces.sprites():
+                    if sprite.rect.colliderect(other_sprite.rect) and other_sprite.stop is True:
+                        sprite.stop = True
+                        sprite.rect.y -= sprite.y_shift // 2
+
             if sprite.rect.y >= screen_height - width:
                 sprite.stop = True
 
     def update_grid(self):
+        pass
+
+    def check4(self):
         pass
 
     def all_stopped(self):
@@ -55,15 +65,17 @@ class GameBoard:
     def get_click(self):
         click = pygame.mouse.get_pressed()[0]
         all_stopped = self.all_stopped()
-        print(all_stopped)
-        if click and not self.game_over and all_stopped:
+        pos = pygame.mouse.get_pos()
+        col = floor(pos[0]/width)
+        if click and not self.game_over and all_stopped and self.stack_heights[col] < num_rows:
             self.player_one = not self.player_one
-            pos = pygame.mouse.get_pos()
             if self.player_one:
                 color = 'red'
             else:
                 color = 'blue'
             self.spawn_gamepiece(pos, color)
+            self.stack_heights[col] += 1
+
 
     def reset(self):
         pass

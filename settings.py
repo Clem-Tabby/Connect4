@@ -1,7 +1,7 @@
 
 num_rows = 6
 num_cols = 7
-y_shift = 3
+y_shift = 8
 background_color = (146, 175, 255)
 
 grid = [[0 for col in range(num_cols)] for row in range(num_rows)]
