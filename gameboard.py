@@ -3,13 +3,14 @@ from settings import grid, width, screen_width, screen_height, num_rows, num_col
 from gamepiece import GamePiece
 from math import floor
 from tile import Tile
+from upper_border import UpperBorder
 
 
 class GameBoard:
 
     def __init__(self, surface):
         self.surface = surface
-        self.end_noise = pygame.mixer.Sound('./Yeah! Teehee!.wav')
+        self.end_noise = pygame.mixer.Sound('sfx/Yeah! Teehee!.wav')
 
         # Game keeping
         self.player_one = True
@@ -26,7 +27,9 @@ class GameBoard:
 
         # Board tiles
         self.tiles = pygame.sprite.Group()
+        self.borders = pygame.sprite.Group()
         self.spawn_tiles()
+        self.spawn_border()
 
     def spawn_tiles(self):
         for row_index, row in enumerate(grid):
@@ -35,6 +38,13 @@ class GameBoard:
                 y = row_index * width + (2 * width)
                 tile = Tile((x, y))
                 self.tiles.add(tile)
+
+    def spawn_border(self):
+        for col in range(num_cols):
+            x = col * width
+            y = 2 * width
+            border = UpperBorder((x, y))
+            self.borders.add(border)
 
     def spawn_gamepiece(self, pos, color):
         x = width * floor(pos[0] // width)
@@ -130,6 +140,7 @@ class GameBoard:
         self.check4()
         self.pieces.draw(self.surface)
         self.tiles.draw(self.surface)
+        self.borders.draw(self.surface)
 
         # Handle game over state
         if self.game_over:
