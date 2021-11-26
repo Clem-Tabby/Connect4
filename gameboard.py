@@ -10,7 +10,7 @@ class GameBoard:
 
     def __init__(self, surface):
         self.surface = surface
-        self.end_noise = pygame.mixer.Sound('sfx/Yeah! Teehee!.wav')
+        self.end_noise = pygame.mixer.Sound('sfx/Yeah Teehee.mp3')
 
         # Game keeping
         self.player_one = True
@@ -149,7 +149,7 @@ class GameBoard:
                 text_color = (255, 0, 0)
             else:
                 text_color = (0, 0, 255)
-            end_font = pygame.font.Font('freesansbold.ttf', 25)
+            end_font = pygame.font.Font('fonts/Ubuntu-Bold.ttf', 25)
             end_text = end_font.render(end_string, True, text_color)
             text_width, text_height = end_font.size(end_string)
             self.surface.blit(end_text, ((screen_width - text_width) / 2, width / 2))
