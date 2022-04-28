@@ -1,6 +1,7 @@
 
 import pygame
 from settings import y_shift
+import resource_path as rp
 
 
 class GamePiece(pygame.sprite.Sprite):
@@ -9,7 +10,7 @@ class GamePiece(pygame.sprite.Sprite):
         self.y_shift = y_shift
         self.stop = False
         self.color = color
-        image = pygame.image.load('./graphics/' + self.color + '_game_piece.png').convert_alpha()
+        image = pygame.image.load(rp.resource_path('graphics/' + self.color + '_game_piece.png')).convert_alpha()
         self.image = image
         self.rect = self.image.get_rect(topleft=pos)
 

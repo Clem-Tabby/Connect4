@@ -4,13 +4,15 @@ from gamepiece import GamePiece
 from math import floor
 from tile import Tile
 from upper_border import UpperBorder
+import resource_path as rp
 
 
 class GameBoard:
 
     def __init__(self, surface):
         self.surface = surface
-        self.end_noise = pygame.mixer.Sound('sfx/Yeah Teehee.mp3')
+        self.end_noise = pygame.mixer.Sound(rp.resource_path('sfx/Yeah Teehee.mp3'))
+        self.end_noise.set_volume(0.1)
 
         # Game keeping
         self.player_one = True
@@ -71,9 +73,9 @@ class GameBoard:
                 connect = 1
                 while connect < 4:
                     target_pos = tuple(map(lambda a, b: a + b, sprite_pos, offset))
-                    try:
+                    try:  # is there a sprite at target position?
                         i = positions.index(target_pos)
-                    except ValueError:
+                    except ValueError:  # if no sprite at target position, stop checking
                         break  # No piece at target_pos
                     if sprite.color == colors[i] and self.all_stopped():
                         connect += 1
@@ -149,13 +151,12 @@ class GameBoard:
                 text_color = (255, 0, 0)
             else:
                 text_color = (0, 0, 255)
-            end_font = pygame.font.Font('fonts/Ubuntu-Bold.ttf', 25)
+            end_font = pygame.font.Font(rp.resource_path('fonts/Ubuntu-Bold.ttf'), 25)
             end_text = end_font.render(end_string, True, text_color)
             text_width, text_height = end_font.size(end_string)
             self.surface.blit(end_text, ((screen_width - text_width) / 2, width / 2))
             if not self.end_noise_played:
                 self.end_noise.play(0)
                 self.end_noise_played = True
-                print(self.end_noise_played)
 
         self.reset()
